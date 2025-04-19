@@ -45,7 +45,6 @@ CREATE TABLE IF NOT EXISTS users (
 conn.commit()
 
 # ----- PASSWORD UTILS -----
-# (Keep your existing password utils: hash_password, verify_password)
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
@@ -54,7 +53,6 @@ def verify_password(password, hashed):
 
 
 # ----- AUTH SYSTEM -----
-# (Keep your existing auth system: sign_up, login)
 def sign_up(username, password):
     try:
         cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hash_password(password)))
@@ -71,7 +69,6 @@ def login(username, password):
     return False
 
 # ----- SESSION -----
-# (Keep your existing session state setup)
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 if "username" not in st.session_state:
@@ -125,7 +122,6 @@ def load_model(model_path):
         return None
 
 # ----- LOGIN / SIGNUP PAGE -----
-# (Keep your existing login_signup_ui function)
 def login_signup_ui():
     st.title("Login / Sign Up")
     tab1, tab2 = st.tabs(["Login", "Sign Up"])
@@ -149,9 +145,9 @@ def login_signup_ui():
             if sign_up(new_username, new_password):
                 st.success("Account created! You can now log in.")
                 # Optionally log them in directly after signup
-                # st.session_state.logged_in = True
-                # st.session_state.username = new_username
-                # st.rerun()
+                st.session_state.logged_in = True
+                st.session_state.username = new_username
+                st.rerun()
             else:
                 st.error("Username already taken.")
 
